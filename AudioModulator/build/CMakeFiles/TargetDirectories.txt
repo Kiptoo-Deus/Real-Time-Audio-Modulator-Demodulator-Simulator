@@ -1,3 +1,5 @@
 C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/build/CMakeFiles/modulator.dir
 C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/build/CMakeFiles/edit_cache.dir
 C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/build/CMakeFiles/rebuild_cache.dir
+C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/build/CMakeFiles/modulator_autogen_timestamp_deps.dir
+C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/build/CMakeFiles/modulator_autogen.dir

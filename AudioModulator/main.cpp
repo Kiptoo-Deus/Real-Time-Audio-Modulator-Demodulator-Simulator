@@ -1,9 +1,13 @@
 #include <portaudio.h>
+#include <QApplication>
+#include <QPushButton>
+#include <QSlider>
+#include <QVBoxLayout>
+#include <QWidget>
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <conio.h> 
-#include <random>  // For noise generation
+#include <random>
 #define SAMPLE_RATE 44100
 #define BUFFER_SIZE 256
 
@@ -16,9 +20,10 @@ std::vector<float> modulated(BUFFER_SIZE);
 std::vector<float> demodulated(BUFFER_SIZE);
 float lowpass_state = 0.0f;
 std::string mode = "AM";
+float noise_level = 0.1f;
 std::random_device rd;
 std::mt19937 gen(rd());
-std::normal_distribution<float> noise(0.0f, 0.1f); // Mean 0, small variance
+std::normal_distribution<float> noise(0.0f, noise_level);
 
 float carrier(float amplitude) {
     carrier_time += 1.0f / SAMPLE_RATE;
@@ -36,7 +41,7 @@ float modulateFM(float audio_sample) {
 }
 
 float addNoise(float sample) {
-    return sample + noise(gen); // Add Gaussian noise
+    return sample + noise(gen);
 }
 
 void demodAM(const std::vector<float>& in, std::vector<float>& out) {
@@ -61,7 +66,7 @@ static int audioCallback(const void* input, void* output, unsigned long frameCou
     float* out = (float*)output;
     for (unsigned long i = 0; i < frameCount; i++) {
         modulated[i] = (mode == "FM") ? modulateFM(in[i]) : modulateAM(in[i]);
-        modulated[i] = addNoise(modulated[i]); 
+        modulated[i] = addNoise(modulated[i]);
         if (mode == "FM") demodFM(modulated, demodulated);
         else demodAM(modulated, demodulated);
         out[i] = demodulated[i];
@@ -75,27 +80,56 @@ void initAudio() {
     Pa_StartStream(stream);
 }
 
-int main() {
-    initAudio();
-    std::cout << "Running (A for AM, F for FM, Q to quit)...\n";
-    while (true) {
-        if (_kbhit()) {
-            char key = _getch();
-            if (key == 'a' || key == 'A') {
-                mode = "AM";
-                std::cout << "Switched to AM\n";
-            }
-            else if (key == 'f' || key == 'F') {
-                mode = "FM";
-                std::cout << "Switched to FM\n";
-            }
-            else if (key == 'q' || key == 'Q') {
-                std::cout << "Quitting...\n";
-                break;
-            }
-        }
+void cleanupAudio() {
+    if (stream) {
+        Pa_StopStream(stream);
+        Pa_CloseStream(stream);
+        Pa_Terminate();
     }
-    Pa_StopStream(stream);
-    Pa_Terminate();
-    return 0;
 }
+
+class AudioWindow : public QWidget {
+    Q_OBJECT
+public:
+    AudioWindow(QWidget* parent = nullptr) : QWidget(parent) {
+        QVBoxLayout* layout = new QVBoxLayout(this);
+        QPushButton* amButton = new QPushButton("AM Mode", this);
+        QPushButton* fmButton = new QPushButton("FM Mode", this);
+        QSlider* noiseSlider = new QSlider(Qt::Horizontal, this);
+        noiseSlider->setRange(0, 50); // 0.0 to 0.5
+        noiseSlider->setValue(10);    // Default 0.1
+
+        layout->addWidget(amButton);
+        layout->addWidget(fmButton);
+        layout->addWidget(noiseSlider);
+        setLayout(layout);
+
+        connect(amButton, &QPushButton::clicked, this, &AudioWindow::setAM);
+        connect(fmButton, &QPushButton::clicked, this, &AudioWindow::setFM);
+        connect(noiseSlider, &QSlider::valueChanged, this, &AudioWindow::setNoise);
+    }
+    ~AudioWindow() {
+        cleanupAudio();
+    }
+
+private slots:
+    void setAM() { mode = "AM"; std::cout << "Switched to AM\n"; }
+    void setFM() { mode = "FM"; std::cout << "Switched to FM\n"; }
+    void setNoise(int value) { 
+        noise_level = value / 100.0f; 
+        noise = std::normal_distribution<float>(0.0f, noise_level); 
+        std::cout << "Noise level set to " << noise_level << "\n";
+    }
+};
+
+int main(int argc, char* argv[]) {
+    initAudio();
+    QApplication app(argc, argv);
+    AudioWindow window;
+    window.show();
+    int result = app.exec();
+    cleanupAudio();
+    return result;
+}
+
+#include "main.moc" // fixes the moc bug

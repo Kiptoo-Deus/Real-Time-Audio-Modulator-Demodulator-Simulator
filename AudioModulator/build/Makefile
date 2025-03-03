@@ -129,6 +129,32 @@ modulator/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator.dir/build.make CMakeFiles/modulator.dir/build
 .PHONY : modulator/fast
 
+#=============================================================================
+# Target rules for targets named modulator_autogen_timestamp_deps
+
+# Build rule for target.
+modulator_autogen_timestamp_deps: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 modulator_autogen_timestamp_deps
+.PHONY : modulator_autogen_timestamp_deps
+
+# fast build rule for target.
+modulator_autogen_timestamp_deps/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator_autogen_timestamp_deps.dir/build.make CMakeFiles/modulator_autogen_timestamp_deps.dir/build
+.PHONY : modulator_autogen_timestamp_deps/fast
+
+#=============================================================================
+# Target rules for targets named modulator_autogen
+
+# Build rule for target.
+modulator_autogen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 modulator_autogen
+.PHONY : modulator_autogen
+
+# fast build rule for target.
+modulator_autogen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator_autogen.dir/build.make CMakeFiles/modulator_autogen.dir/build
+.PHONY : modulator_autogen/fast
+
 main.obj: main.cpp.obj
 .PHONY : main.obj
 
@@ -153,6 +179,30 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator.dir/build.make CMakeFiles/modulator.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+modulator_autogen/mocs_compilation.obj: modulator_autogen/mocs_compilation.cpp.obj
+.PHONY : modulator_autogen/mocs_compilation.obj
+
+# target to build an object file
+modulator_autogen/mocs_compilation.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator.dir/build.make CMakeFiles/modulator.dir/modulator_autogen/mocs_compilation.cpp.obj
+.PHONY : modulator_autogen/mocs_compilation.cpp.obj
+
+modulator_autogen/mocs_compilation.i: modulator_autogen/mocs_compilation.cpp.i
+.PHONY : modulator_autogen/mocs_compilation.i
+
+# target to preprocess a source file
+modulator_autogen/mocs_compilation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator.dir/build.make CMakeFiles/modulator.dir/modulator_autogen/mocs_compilation.cpp.i
+.PHONY : modulator_autogen/mocs_compilation.cpp.i
+
+modulator_autogen/mocs_compilation.s: modulator_autogen/mocs_compilation.cpp.s
+.PHONY : modulator_autogen/mocs_compilation.s
+
+# target to generate assembly for a file
+modulator_autogen/mocs_compilation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator.dir/build.make CMakeFiles/modulator.dir/modulator_autogen/mocs_compilation.cpp.s
+.PHONY : modulator_autogen/mocs_compilation.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -161,10 +211,15 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... modulator_autogen"
+	@echo "... modulator_autogen_timestamp_deps"
 	@echo "... modulator"
 	@echo "... main.obj"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... modulator_autogen/mocs_compilation.obj"
+	@echo "... modulator_autogen/mocs_compilation.i"
+	@echo "... modulator_autogen/mocs_compilation.s"
 .PHONY : help
 
 
