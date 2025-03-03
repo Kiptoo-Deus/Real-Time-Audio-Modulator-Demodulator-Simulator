@@ -2,7 +2,8 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <conio.h> // Windows key detection
+#include <conio.h> 
+#include <random>  // For noise generation
 #define SAMPLE_RATE 44100
 #define BUFFER_SIZE 256
 
@@ -14,7 +15,10 @@ float last_sample = 0.0f;
 std::vector<float> modulated(BUFFER_SIZE);
 std::vector<float> demodulated(BUFFER_SIZE);
 float lowpass_state = 0.0f;
-std::string mode = "AM"; 
+std::string mode = "AM";
+std::random_device rd;
+std::mt19937 gen(rd());
+std::normal_distribution<float> noise(0.0f, 0.1f); // Mean 0, small variance
 
 float carrier(float amplitude) {
     carrier_time += 1.0f / SAMPLE_RATE;
@@ -29,6 +33,10 @@ float modulateFM(float audio_sample) {
     float freq_dev = 5000.0f;
     phase += 2 * M_PI * (carrier_freq + audio_sample * freq_dev) / SAMPLE_RATE;
     return sinf(phase);
+}
+
+float addNoise(float sample) {
+    return sample + noise(gen); // Add Gaussian noise
 }
 
 void demodAM(const std::vector<float>& in, std::vector<float>& out) {
@@ -53,6 +61,7 @@ static int audioCallback(const void* input, void* output, unsigned long frameCou
     float* out = (float*)output;
     for (unsigned long i = 0; i < frameCount; i++) {
         modulated[i] = (mode == "FM") ? modulateFM(in[i]) : modulateAM(in[i]);
+        modulated[i] = addNoise(modulated[i]); 
         if (mode == "FM") demodFM(modulated, demodulated);
         else demodAM(modulated, demodulated);
         out[i] = demodulated[i];
@@ -70,8 +79,8 @@ int main() {
     initAudio();
     std::cout << "Running (A for AM, F for FM, Q to quit)...\n";
     while (true) {
-        if (_kbhit()) { // Check if a key is pressed
-            char key = _getch(); // Get key without waiting
+        if (_kbhit()) {
+            char key = _getch();
             if (key == 'a' || key == 'A') {
                 mode = "AM";
                 std::cout << "Switched to AM\n";

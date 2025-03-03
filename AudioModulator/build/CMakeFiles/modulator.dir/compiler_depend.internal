@@ -107,6 +107,7 @@ CMakeFiles/modulator.dir/main.cpp.obj
  C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32/bits/gthr-default.h
  C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32/bits/gthr.h
  C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32/bits/os_defines.h
+ C:/msys64/mingw64/include/conio.h
  C:/msys64/mingw64/include/corecrt.h
  C:/msys64/mingw64/include/corecrt_startup.h
  C:/msys64/mingw64/include/corecrt_stdio_config.h
@@ -126,6 +127,7 @@ CMakeFiles/modulator.dir/main.cpp.obj
  C:/msys64/mingw64/include/pthread_time.h
  C:/msys64/mingw64/include/pthread_unistd.h
  C:/msys64/mingw64/include/sdks/_mingw_ddk.h
+ C:/msys64/mingw64/include/sec_api/conio_s.h
  C:/msys64/mingw64/include/sec_api/stdio_s.h
  C:/msys64/mingw64/include/sec_api/stdlib_s.h
  C:/msys64/mingw64/include/sec_api/sys/timeb_s.h

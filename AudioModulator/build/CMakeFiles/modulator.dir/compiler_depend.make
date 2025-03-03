@@ -106,6 +106,7 @@ CMakeFiles/modulator.dir/main.cpp.obj: C:/Users/JOEL/Documents/GitHub/Real\ Time
   C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32/bits/gthr-default.h \
   C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32/bits/gthr.h \
   C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32/bits/os_defines.h \
+  C:/msys64/mingw64/include/conio.h \
   C:/msys64/mingw64/include/corecrt.h \
   C:/msys64/mingw64/include/corecrt_startup.h \
   C:/msys64/mingw64/include/corecrt_stdio_config.h \
@@ -125,6 +126,7 @@ CMakeFiles/modulator.dir/main.cpp.obj: C:/Users/JOEL/Documents/GitHub/Real\ Time
   C:/msys64/mingw64/include/pthread_time.h \
   C:/msys64/mingw64/include/pthread_unistd.h \
   C:/msys64/mingw64/include/sdks/_mingw_ddk.h \
+  C:/msys64/mingw64/include/sec_api/conio_s.h \
   C:/msys64/mingw64/include/sec_api/stdio_s.h \
   C:/msys64/mingw64/include/sec_api/stdlib_s.h \
   C:/msys64/mingw64/include/sec_api/sys/timeb_s.h \
@@ -166,6 +168,8 @@ C:/msys64/mingw64/include/signal.h:
 
 C:/msys64/mingw64/include/sec_api/wchar_s.h:
 
+C:/msys64/mingw64/include/sec_api/stdlib_s.h:
+
 C:/msys64/mingw64/include/c++/14.1.0/bits/stl_vector.h:
 
 C:/msys64/mingw64/include/c++/14.1.0/bits/stl_function.h:
@@ -175,6 +179,10 @@ C:/msys64/mingw64/include/c++/14.1.0/bits/stl_iterator.h:
 C:/msys64/mingw64/include/c++/14.1.0/ext/numeric_traits.h:
 
 C:/msys64/mingw64/include/c++/14.1.0/bits/std_abs.h:
+
+C:/msys64/mingw64/include/sec_api/sys/timeb_s.h:
+
+C:/msys64/mingw64/include/c++/14.1.0/bits/new_allocator.h:
 
 C:/msys64/mingw64/include/malloc.h:
 
@@ -318,6 +326,8 @@ C:/msys64/mingw64/include/c++/14.1.0/bits/stringfwd.h:
 
 C:/msys64/mingw64/include/c++/14.1.0/ext/alloc_traits.h:
 
+C:/msys64/mingw64/include/conio.h:
+
 C:/msys64/mingw64/include/crtdefs.h:
 
 C:/msys64/mingw64/include/sys/types.h:
@@ -376,8 +386,6 @@ C:/msys64/mingw64/include/corecrt_stdio_config.h:
 
 C:/msys64/mingw64/include/pthread_time.h:
 
-C:/msys64/mingw64/include/sec_api/stdlib_s.h:
-
 C:/msys64/mingw64/include/c++/14.1.0/ios:
 
 C:/msys64/mingw64/include/sec_api/stdio_s.h:
@@ -397,6 +405,8 @@ C:/msys64/mingw64/include/c++/14.1.0/type_traits:
 C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32/bits/atomic_word.h:
 
 C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32/bits/c++config.h:
+
+C:/msys64/mingw64/include/sec_api/conio_s.h:
 
 C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32/bits/c++locale.h:
 
@@ -427,7 +437,3 @@ C:/msys64/mingw64/include/pthread_signal.h:
 C:/msys64/mingw64/include/limits.h:
 
 C:/msys64/mingw64/include/math.h:
-
-C:/msys64/mingw64/include/c++/14.1.0/bits/new_allocator.h:
-
-C:/msys64/mingw64/include/sec_api/sys/timeb_s.h:
