@@ -135,4 +135,6 @@ CMakeFiles/modulator.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/14.1.0/bits/stl_uninitialized.h \
  C:/msys64/mingw64/include/c++/14.1.0/bits/stl_vector.h \
  C:/msys64/mingw64/include/c++/14.1.0/bits/stl_bvector.h \
- C:/msys64/mingw64/include/c++/14.1.0/bits/vector.tcc
+ C:/msys64/mingw64/include/c++/14.1.0/bits/vector.tcc \
+ C:/msys64/mingw64/include/conio.h \
+ C:/msys64/mingw64/include/sec_api/conio_s.h
