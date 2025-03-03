@@ -5,7 +5,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QTimer>
-#include "qcustomplot.h" // Include QCustomPlot
+#include "qcustomplot.h"
+#include <sndfile.h> // For WAV output
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -19,13 +20,16 @@ float carrier_time = 0.0f;
 float phase = 0.0f;
 float last_sample = 0.0f;
 std::vector<float> modulated(BUFFER_SIZE);
-std::vector<float> demodulated(BUFFER_SIZE); // Audio data to plot
+std::vector<float> demodulated(BUFFER_SIZE);
 float lowpass_state = 0.0f;
 std::string mode = "AM";
 float noise_level = 0.1f;
 std::random_device rd;
 std::mt19937 gen(rd());
 std::normal_distribution<float> noise(0.0f, noise_level);
+SNDFILE* wav_file = nullptr; // WAV file handle
+SF_INFO sf_info = {0};       // WAV file info
+bool is_recording = false;   // Recording state
 
 float carrier(float amplitude) {
     carrier_time += 1.0f / SAMPLE_RATE;
@@ -73,6 +77,9 @@ static int audioCallback(const void* input, void* output, unsigned long frameCou
         else demodAM(modulated, demodulated);
         out[i] = demodulated[i];
     }
+    if (is_recording && wav_file) { // Write to WAV if recording
+        sf_write_float(wav_file, demodulated.data(), frameCount);
+    }
     return paContinue;
 }
 
@@ -88,6 +95,10 @@ void cleanupAudio() {
         Pa_CloseStream(stream);
         Pa_Terminate();
     }
+    if (wav_file) {
+        sf_close(wav_file);
+        wav_file = nullptr;
+    }
 }
 
 class AudioWindow : public QWidget {
@@ -100,25 +111,33 @@ public:
         QSlider* noiseSlider = new QSlider(Qt::Horizontal, this);
         noiseSlider->setRange(0, 50);
         noiseSlider->setValue(10);
-        plot = new QCustomPlot(this); // Add waveform plot
+        recordButton = new QPushButton("Start Recording", this); // Toggle record
+        plot = new QCustomPlot(this);
         plot->addGraph();
         plot->xAxis->setRange(0, BUFFER_SIZE);
-        plot->yAxis->setRange(-1, 1); // Audio range
+        plot->yAxis->setRange(-1, 1);
         plot->setMinimumHeight(200);
 
         layout->addWidget(amButton);
         layout->addWidget(fmButton);
         layout->addWidget(noiseSlider);
+        layout->addWidget(recordButton);
         layout->addWidget(plot);
         setLayout(layout);
 
         connect(amButton, &QPushButton::clicked, this, &AudioWindow::setAM);
         connect(fmButton, &QPushButton::clicked, this, &AudioWindow::setFM);
         connect(noiseSlider, &QSlider::valueChanged, this, &AudioWindow::setNoise);
+        connect(recordButton, &QPushButton::clicked, this, &AudioWindow::toggleRecord);
 
-        QTimer* timer = new QTimer(this); // Refresh plot
+        QTimer* timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &AudioWindow::updatePlot);
-        timer->start(50); // Update every 50ms
+        timer->start(50);
+
+        // Initialize WAV info
+        sf_info.channels = 1;
+        sf_info.samplerate = SAMPLE_RATE;
+        sf_info.format = SF_FORMAT_WAV | SF_FORMAT_FLOAT;
     }
     ~AudioWindow() {
         cleanupAudio();
@@ -136,14 +155,33 @@ private slots:
         QVector<double> x(BUFFER_SIZE), y(BUFFER_SIZE);
         for (int i = 0; i < BUFFER_SIZE; i++) {
             x[i] = i;
-            y[i] = demodulated[i]; // Plot demodulated audio
+            y[i] = demodulated[i];
         }
         plot->graph(0)->setData(x, y);
         plot->replot();
     }
+    void toggleRecord() {
+        if (!is_recording) {
+            wav_file = sf_open("output.wav", SFM_WRITE, &sf_info);
+            if (!wav_file) {
+                std::cout << "Failed to open output.wav: " << sf_strerror(nullptr) << "\n";
+                return;
+            }
+            is_recording = true;
+            recordButton->setText("Stop Recording");
+            std::cout << "Recording started\n";
+        } else {
+            sf_close(wav_file);
+            wav_file = nullptr;
+            is_recording = false;
+            recordButton->setText("Start Recording");
+            std::cout << "Recording stopped\n";
+        }
+    }
 
 private:
-    QCustomPlot* plot; // Waveform widget
+    QCustomPlot* plot;
+    QPushButton* recordButton; // New button for recording
 };
 
 int main(int argc, char* argv[]) {

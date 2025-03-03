@@ -817,6 +817,7 @@ C:/Users/JOEL/Documents/GitHub/Real\ Time\ Audio\ Modulator\ Demodulator\ Simula
   C:/msys64/mingw64/include/servprov.h \
   C:/msys64/mingw64/include/shellapi.h \
   C:/msys64/mingw64/include/signal.h \
+  C:/msys64/mingw64/include/sndfile.h \
   C:/msys64/mingw64/include/specstrings.h \
   C:/msys64/mingw64/include/stdarg.h \
   C:/msys64/mingw64/include/stddef.h \

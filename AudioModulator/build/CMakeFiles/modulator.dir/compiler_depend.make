@@ -827,6 +827,7 @@ modulator_autogen/timestamp: C:/Users/JOEL/Documents/GitHub/Real\ Time\ Audio\ M
   C:/msys64/mingw64/include/servprov.h \
   C:/msys64/mingw64/include/shellapi.h \
   C:/msys64/mingw64/include/signal.h \
+  C:/msys64/mingw64/include/sndfile.h \
   C:/msys64/mingw64/include/specstrings.h \
   C:/msys64/mingw64/include/stdarg.h \
   C:/msys64/mingw64/include/stddef.h \
@@ -1657,8 +1658,6 @@ C:/msys64/mingw64/include/QtCore/qfilesystemwatcher.h:
 
 C:/msys64/mingw64/include/QtCore/qdatastream.h:
 
-C:/msys64/mingw64/include/QtCore/qcryptographichash.h:
-
 C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include/prfchwintrin.h:
 
 C:/msys64/mingw64/include/QtGui/qtextcursor.h:
@@ -1850,6 +1849,10 @@ C:/msys64/mingw64/include/QtGui/QImage:
 C:/msys64/mingw64/include/unknwn.h:
 
 C:/msys64/mingw64/include/QtCore/qcommandlineparser.h:
+
+C:/msys64/mingw64/include/QtCore/qcryptographichash.h:
+
+C:/msys64/mingw64/include/sndfile.h:
 
 C:/msys64/mingw64/include/QtCore/QPointF:
 

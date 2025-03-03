@@ -266,6 +266,9 @@ Qt5Widgets_DIR:PATH=C:/msys64/mingw64/lib/cmake/Qt5Widgets
 //The directory containing a CMake configuration file for Qt5.
 Qt5_DIR:PATH=C:/msys64/mingw64/lib/cmake/Qt5
 
+//Path to a library.
+SNDFILE_LIB:FILEPATH=C:/msys64/mingw64/lib/libsndfile.dll.a
+
 
 ########################
 # INTERNAL cache entries
