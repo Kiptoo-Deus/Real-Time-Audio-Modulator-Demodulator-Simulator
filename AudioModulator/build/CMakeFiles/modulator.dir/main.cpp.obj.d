@@ -128,4 +128,6 @@ CMakeFiles/modulator.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/14.1.0/bits/basic_ios.tcc \
  C:/msys64/mingw64/include/c++/14.1.0/bits/ostream.tcc \
  C:/msys64/mingw64/include/c++/14.1.0/istream \
- C:/msys64/mingw64/include/c++/14.1.0/bits/istream.tcc
+ C:/msys64/mingw64/include/c++/14.1.0/bits/istream.tcc \
+ C:/msys64/mingw64/include/c++/14.1.0/cmath \
+ C:/msys64/mingw64/include/math.h
