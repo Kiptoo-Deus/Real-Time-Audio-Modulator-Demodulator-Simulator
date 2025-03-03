@@ -203,6 +203,30 @@ modulator_autogen/mocs_compilation.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator.dir/build.make CMakeFiles/modulator.dir/modulator_autogen/mocs_compilation.cpp.s
 .PHONY : modulator_autogen/mocs_compilation.cpp.s
 
+qcustomplot.obj: qcustomplot.cpp.obj
+.PHONY : qcustomplot.obj
+
+# target to build an object file
+qcustomplot.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator.dir/build.make CMakeFiles/modulator.dir/qcustomplot.cpp.obj
+.PHONY : qcustomplot.cpp.obj
+
+qcustomplot.i: qcustomplot.cpp.i
+.PHONY : qcustomplot.i
+
+# target to preprocess a source file
+qcustomplot.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator.dir/build.make CMakeFiles/modulator.dir/qcustomplot.cpp.i
+.PHONY : qcustomplot.cpp.i
+
+qcustomplot.s: qcustomplot.cpp.s
+.PHONY : qcustomplot.s
+
+# target to generate assembly for a file
+qcustomplot.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator.dir/build.make CMakeFiles/modulator.dir/qcustomplot.cpp.s
+.PHONY : qcustomplot.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -220,6 +244,9 @@ help:
 	@echo "... modulator_autogen/mocs_compilation.obj"
 	@echo "... modulator_autogen/mocs_compilation.i"
 	@echo "... modulator_autogen/mocs_compilation.s"
+	@echo "... qcustomplot.obj"
+	@echo "... qcustomplot.i"
+	@echo "... qcustomplot.s"
 .PHONY : help
 
 

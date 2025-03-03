@@ -6,6 +6,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/modulator.dir/main.cpp.obj.d"
   "CMakeFiles/modulator.dir/modulator_autogen/mocs_compilation.cpp.obj"
   "CMakeFiles/modulator.dir/modulator_autogen/mocs_compilation.cpp.obj.d"
+  "CMakeFiles/modulator.dir/qcustomplot.cpp.obj"
+  "CMakeFiles/modulator.dir/qcustomplot.cpp.obj.d"
   "libmodulator.dll.a"
   "modulator.exe"
   "modulator.exe.manifest"

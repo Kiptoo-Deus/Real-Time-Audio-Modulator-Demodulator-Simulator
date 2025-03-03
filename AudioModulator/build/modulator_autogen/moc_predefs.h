@@ -443,6 +443,7 @@
 #define __UINT_FAST16_MAX__ 0xffff
 #define __LDBL_NORM_MAX__ 1.18973149535723176502126385303097021e+4932L
 #define __GCC_ATOMIC_SHORT_LOCK_FREE 2
+#define QT_PRINTSUPPORT_LIB 1
 #define __SIZE_MAX__ 0xffffffffffffffffULL
 #define __UINT_FAST8_TYPE__ unsigned char
 #define __ATOMIC_ACQ_REL 4

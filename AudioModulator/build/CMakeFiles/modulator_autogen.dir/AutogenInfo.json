@@ -208,17 +208,35 @@
 		"C:/msys64/mingw64/lib/cmake/Qt5Widgets/Qt5Widgets_QWindowsVistaStylePlugin.cmake",
 		"C:/msys64/mingw64/lib/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake",
 		"C:/msys64/mingw64/lib/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake",
-		"C:/msys64/mingw64/share/cmake/Modules/CMakeParseArguments.cmake"
+		"C:/msys64/mingw64/share/cmake/Modules/CMakeParseArguments.cmake",
+		"C:/msys64/mingw64/lib/cmake/Qt5PrintSupport/Qt5PrintSupportConfigVersion.cmake",
+		"C:/msys64/mingw64/lib/cmake/Qt5PrintSupport/Qt5PrintSupportConfig.cmake",
+		"C:/msys64/mingw64/lib/cmake/Qt5PrintSupport/Qt5PrintSupport_QWindowsPrinterSupportPlugin.cmake"
 	],
 	"CMAKE_SOURCE_DIR" : "C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator",
 	"CROSS_CONFIG" : false,
 	"DEP_FILE" : "C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/build/modulator_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "modulator_autogen/timestamp",
-	"HEADERS" : [],
+	"HEADERS" : 
+	[
+		[
+			"C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/qcustomplot.h",
+			"MU",
+			"EWIEGA46WW/moc_qcustomplot.cpp",
+			null
+		]
+	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
 	"INCLUDE_DIR" : "C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/build/modulator_autogen/include",
 	"MOC_COMPILATION_FILE" : "C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/build/modulator_autogen/mocs_compilation.cpp",
-	"MOC_DEFINITIONS" : [ "QT_CORE_LIB", "QT_GUI_LIB", "QT_NO_DEBUG", "QT_WIDGETS_LIB" ],
+	"MOC_DEFINITIONS" : 
+	[
+		"QT_CORE_LIB",
+		"QT_GUI_LIB",
+		"QT_NO_DEBUG",
+		"QT_PRINTSUPPORT_LIB",
+		"QT_WIDGETS_LIB"
+	],
 	"MOC_DEPEND_FILTERS" : 
 	[
 		[
@@ -228,10 +246,12 @@
 	],
 	"MOC_INCLUDES" : 
 	[
+		"C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator",
 		"C:/msys64/mingw64/include/QtWidgets",
 		"C:/msys64/mingw64/include/QtGui",
 		"C:/msys64/mingw64/include/QtCore",
 		"C:/msys64/mingw64/share/qt5/mkspecs/win32-g++",
+		"C:/msys64/mingw64/include/QtPrintSupport",
 		"C:/msys64/mingw64/include",
 		"C:/msys64/mingw64/include/c++/14.1.0",
 		"C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32",
@@ -266,6 +286,11 @@
 	[
 		[
 			"C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/main.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/qcustomplot.cpp",
 			"MU",
 			null
 		]
