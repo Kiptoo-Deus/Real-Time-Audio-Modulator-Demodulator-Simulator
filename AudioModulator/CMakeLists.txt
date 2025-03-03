@@ -10,11 +10,11 @@ if(NOT PORTAUDIO_LIB)
     message(FATAL_ERROR "PortAudio not found. Ensure it's installed.")
 endif()
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets PrintSupport REQUIRED) # Add PrintSupport
 if(NOT Qt5_FOUND)
-    message(FATAL_ERROR "Qt5 Widgets not found. Install mingw-w64-x86_64-qt5.")
+    message(FATAL_ERROR "Qt5 not found. Install mingw-w64-x86_64-qt5.")
 endif()
 
-add_executable(modulator main.cpp qcustomplot.cpp) # Add qcustomplot.cpp
-target_include_directories(modulator PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}) # For qcustomplot.h
-target_link_libraries(modulator ${PORTAUDIO_LIB} Qt5::Widgets)
+add_executable(modulator main.cpp qcustomplot.cpp)
+target_include_directories(modulator PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(modulator ${PORTAUDIO_LIB} Qt5::Widgets Qt5::PrintSupport) #I am Linking PrintSupport

@@ -4,6 +4,8 @@
 #include <QSlider>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QTimer>
+#include "qcustomplot.h" // Include QCustomPlot
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -17,7 +19,7 @@ float carrier_time = 0.0f;
 float phase = 0.0f;
 float last_sample = 0.0f;
 std::vector<float> modulated(BUFFER_SIZE);
-std::vector<float> demodulated(BUFFER_SIZE);
+std::vector<float> demodulated(BUFFER_SIZE); // Audio data to plot
 float lowpass_state = 0.0f;
 std::string mode = "AM";
 float noise_level = 0.1f;
@@ -96,17 +98,27 @@ public:
         QPushButton* amButton = new QPushButton("AM Mode", this);
         QPushButton* fmButton = new QPushButton("FM Mode", this);
         QSlider* noiseSlider = new QSlider(Qt::Horizontal, this);
-        noiseSlider->setRange(0, 50); // 0.0 to 0.5
-        noiseSlider->setValue(10);    // Default 0.1
+        noiseSlider->setRange(0, 50);
+        noiseSlider->setValue(10);
+        plot = new QCustomPlot(this); // Add waveform plot
+        plot->addGraph();
+        plot->xAxis->setRange(0, BUFFER_SIZE);
+        plot->yAxis->setRange(-1, 1); // Audio range
+        plot->setMinimumHeight(200);
 
         layout->addWidget(amButton);
         layout->addWidget(fmButton);
         layout->addWidget(noiseSlider);
+        layout->addWidget(plot);
         setLayout(layout);
 
         connect(amButton, &QPushButton::clicked, this, &AudioWindow::setAM);
         connect(fmButton, &QPushButton::clicked, this, &AudioWindow::setFM);
         connect(noiseSlider, &QSlider::valueChanged, this, &AudioWindow::setNoise);
+
+        QTimer* timer = new QTimer(this); // Refresh plot
+        connect(timer, &QTimer::timeout, this, &AudioWindow::updatePlot);
+        timer->start(50); // Update every 50ms
     }
     ~AudioWindow() {
         cleanupAudio();
@@ -120,6 +132,18 @@ private slots:
         noise = std::normal_distribution<float>(0.0f, noise_level); 
         std::cout << "Noise level set to " << noise_level << "\n";
     }
+    void updatePlot() {
+        QVector<double> x(BUFFER_SIZE), y(BUFFER_SIZE);
+        for (int i = 0; i < BUFFER_SIZE; i++) {
+            x[i] = i;
+            y[i] = demodulated[i]; // Plot demodulated audio
+        }
+        plot->graph(0)->setData(x, y);
+        plot->replot();
+    }
+
+private:
+    QCustomPlot* plot; // Waveform widget
 };
 
 int main(int argc, char* argv[]) {
@@ -132,4 +156,4 @@ int main(int argc, char* argv[]) {
     return result;
 }
 
-#include "main.moc" // fixes the moc bug
+#include "main.moc"
