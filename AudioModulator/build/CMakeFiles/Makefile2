@@ -80,8 +80,8 @@ clean: CMakeFiles/modulator_autogen.dir/clean
 # Target rules for target CMakeFiles/modulator.dir
 
 # All Build rule for target.
-CMakeFiles/modulator.dir/all: CMakeFiles/modulator_autogen.dir/all
 CMakeFiles/modulator.dir/all: CMakeFiles/modulator_autogen_timestamp_deps.dir/all
+CMakeFiles/modulator.dir/all: CMakeFiles/modulator_autogen.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator.dir/build.make CMakeFiles/modulator.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/modulator.dir/build.make CMakeFiles/modulator.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/C/Users/JOEL/Documents/GitHub/Real Time Audio Modulator Demodulator Simulator/AudioModulator/build/CMakeFiles" --progress-num=1,2,3,4,5 "Built target modulator"

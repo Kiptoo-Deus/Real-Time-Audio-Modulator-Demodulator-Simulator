@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_AudioWindow_t {
     QByteArrayData data[8];
-    char stringdata0[64];
+    char stringdata0[65];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,12 +37,12 @@ QT_MOC_LITERAL(2, 18, 0), // ""
 QT_MOC_LITERAL(3, 19, 5), // "setFM"
 QT_MOC_LITERAL(4, 25, 8), // "setNoise"
 QT_MOC_LITERAL(5, 34, 5), // "value"
-QT_MOC_LITERAL(6, 40, 10), // "updatePlot"
-QT_MOC_LITERAL(7, 51, 12) // "toggleRecord"
+QT_MOC_LITERAL(6, 40, 12), // "toggleRecord"
+QT_MOC_LITERAL(7, 53, 11) // "updatePlots"
 
     },
     "AudioWindow\0setAM\0\0setFM\0setNoise\0"
-    "value\0updatePlot\0toggleRecord"
+    "value\0toggleRecord\0updatePlots"
 };
 #undef QT_MOC_LITERAL
 
@@ -85,8 +85,8 @@ void AudioWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 0: _t->setAM(); break;
         case 1: _t->setFM(); break;
         case 2: _t->setNoise((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 3: _t->updatePlot(); break;
-        case 4: _t->toggleRecord(); break;
+        case 3: _t->toggleRecord(); break;
+        case 4: _t->updatePlots(); break;
         default: ;
         }
     }

@@ -1114,7 +1114,7 @@ CMakeFiles/modulator.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/QtPrintSupport/qtprintsupportversion.h \
  C:/msys64/mingw64/include/QtCore/QElapsedTimer \
  C:/msys64/mingw64/include/QtCore/QTimeZone \
- C:/msys64/mingw64/include/sndfile.h \
+ C:/msys64/mingw64/include/sndfile.h C:/msys64/mingw64/include/fftw3.h \
  C:/msys64/mingw64/include/c++/14.1.0/iostream \
  C:/msys64/mingw64/include/c++/14.1.0/ostream \
  C:/msys64/mingw64/include/c++/14.1.0/ios \

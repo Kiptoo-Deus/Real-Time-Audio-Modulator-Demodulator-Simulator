@@ -6,7 +6,8 @@
 #include <QWidget>
 #include <QTimer>
 #include "qcustomplot.h"
-#include <sndfile.h> // For WAV output
+#include <sndfile.h>
+#include <fftw3.h> // For FFT
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -27,9 +28,9 @@ float noise_level = 0.1f;
 std::random_device rd;
 std::mt19937 gen(rd());
 std::normal_distribution<float> noise(0.0f, noise_level);
-SNDFILE* wav_file = nullptr; // WAV file handle
-SF_INFO sf_info = {0};       // WAV file info
-bool is_recording = false;   // Recording state
+SNDFILE* wav_file = nullptr;
+SF_INFO sf_info = {0};
+bool is_recording = false;
 
 float carrier(float amplitude) {
     carrier_time += 1.0f / SAMPLE_RATE;
@@ -77,7 +78,7 @@ static int audioCallback(const void* input, void* output, unsigned long frameCou
         else demodAM(modulated, demodulated);
         out[i] = demodulated[i];
     }
-    if (is_recording && wav_file) { // Write to WAV if recording
+    if (is_recording && wav_file) {
         sf_write_float(wav_file, demodulated.data(), frameCount);
     }
     return paContinue;
@@ -111,18 +112,24 @@ public:
         QSlider* noiseSlider = new QSlider(Qt::Horizontal, this);
         noiseSlider->setRange(0, 50);
         noiseSlider->setValue(10);
-        recordButton = new QPushButton("Start Recording", this); // Toggle record
-        plot = new QCustomPlot(this);
-        plot->addGraph();
-        plot->xAxis->setRange(0, BUFFER_SIZE);
-        plot->yAxis->setRange(-1, 1);
-        plot->setMinimumHeight(200);
+        recordButton = new QPushButton("Start Recording", this);
+        waveformPlot = new QCustomPlot(this); 
+        waveformPlot->addGraph();
+        waveformPlot->xAxis->setRange(0, BUFFER_SIZE);
+        waveformPlot->yAxis->setRange(-1, 1);
+        waveformPlot->setMinimumHeight(200);
+        spectrumPlot = new QCustomPlot(this); // New spectrum plot
+        spectrumPlot->addGraph();
+        spectrumPlot->xAxis->setRange(0, SAMPLE_RATE / 2); // Frequency range (Nyquist)
+        spectrumPlot->yAxis->setRange(0, 1); // Magnitude range
+        spectrumPlot->setMinimumHeight(200);
 
         layout->addWidget(amButton);
         layout->addWidget(fmButton);
         layout->addWidget(noiseSlider);
         layout->addWidget(recordButton);
-        layout->addWidget(plot);
+        layout->addWidget(waveformPlot);
+        layout->addWidget(spectrumPlot);
         setLayout(layout);
 
         connect(amButton, &QPushButton::clicked, this, &AudioWindow::setAM);
@@ -131,15 +138,21 @@ public:
         connect(recordButton, &QPushButton::clicked, this, &AudioWindow::toggleRecord);
 
         QTimer* timer = new QTimer(this);
-        connect(timer, &QTimer::timeout, this, &AudioWindow::updatePlot);
+        connect(timer, &QTimer::timeout, this, &AudioWindow::updatePlots);
         timer->start(50);
 
-        // Initialize WAV info
         sf_info.channels = 1;
         sf_info.samplerate = SAMPLE_RATE;
         sf_info.format = SF_FORMAT_WAV | SF_FORMAT_FLOAT;
+
+        fft_in = (double*)fftw_malloc(sizeof(double) * BUFFER_SIZE);
+        fft_out = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * (BUFFER_SIZE / 2 + 1));
+        fft_plan = fftw_plan_dft_r2c_1d(BUFFER_SIZE, fft_in, fft_out, FFTW_ESTIMATE);
     }
     ~AudioWindow() {
+        fftw_destroy_plan(fft_plan);
+        fftw_free(fft_in);
+        fftw_free(fft_out);
         cleanupAudio();
     }
 
@@ -150,15 +163,6 @@ private slots:
         noise_level = value / 100.0f; 
         noise = std::normal_distribution<float>(0.0f, noise_level); 
         std::cout << "Noise level set to " << noise_level << "\n";
-    }
-    void updatePlot() {
-        QVector<double> x(BUFFER_SIZE), y(BUFFER_SIZE);
-        for (int i = 0; i < BUFFER_SIZE; i++) {
-            x[i] = i;
-            y[i] = demodulated[i];
-        }
-        plot->graph(0)->setData(x, y);
-        plot->replot();
     }
     void toggleRecord() {
         if (!is_recording) {
@@ -178,10 +182,37 @@ private slots:
             std::cout << "Recording stopped\n";
         }
     }
+    void updatePlots() {
+        // Waveform
+        QVector<double> x(BUFFER_SIZE), y(BUFFER_SIZE);
+        for (int i = 0; i < BUFFER_SIZE; i++) {
+            x[i] = i;
+            y[i] = demodulated[i];
+        }
+        waveformPlot->graph(0)->setData(x, y);
+        waveformPlot->replot();
+
+        // Spectrum
+        for (int i = 0; i < BUFFER_SIZE; i++) {
+            fft_in[i] = demodulated[i]; // FFT input
+        }
+        fftw_execute(fft_plan); // Compute FFT
+        QVector<double> freq(BUFFER_SIZE / 2), mag(BUFFER_SIZE / 2);
+        for (int i = 0; i < BUFFER_SIZE / 2; i++) {
+            freq[i] = i * SAMPLE_RATE / BUFFER_SIZE; // Frequency bins
+            mag[i] = sqrt(fft_out[i][0] * fft_out[i][0] + fft_out[i][1] * fft_out[i][1]) / BUFFER_SIZE; // Magnitude
+        }
+        spectrumPlot->graph(0)->setData(freq, mag);
+        spectrumPlot->replot();
+    }
 
 private:
-    QCustomPlot* plot;
-    QPushButton* recordButton; // New button for recording
+    QCustomPlot* waveformPlot;
+    QCustomPlot* spectrumPlot; // spectrum plot
+    QPushButton* recordButton;
+    double* fft_in;          // FFTW input
+    fftw_complex* fft_out;   // FFTW output
+    fftw_plan fft_plan;      // FFTW plan
 };
 
 int main(int argc, char* argv[]) {

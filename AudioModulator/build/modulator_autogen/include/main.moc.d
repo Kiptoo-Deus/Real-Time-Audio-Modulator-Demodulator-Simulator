@@ -725,6 +725,7 @@ C:/Users/JOEL/Documents/GitHub/Real\ Time\ Audio\ Modulator\ Demodulator\ Simula
   C:/msys64/mingw64/include/errhandlingapi.h \
   C:/msys64/mingw64/include/errno.h \
   C:/msys64/mingw64/include/excpt.h \
+  C:/msys64/mingw64/include/fftw3.h \
   C:/msys64/mingw64/include/fibersapi.h \
   C:/msys64/mingw64/include/fileapi.h \
   C:/msys64/mingw64/include/fltwinerror.h \
