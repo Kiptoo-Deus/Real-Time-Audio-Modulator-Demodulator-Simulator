@@ -287,6 +287,9 @@ CMakeFiles/modulator.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/QtCore/QTimer \
  C:/msys64/mingw64/include/QtCore/qtimer.h \
  C:/msys64/mingw64/include/QtCore/qbasictimer.h \
+ C:/msys64/mingw64/include/QtWidgets/QLabel \
+ C:/msys64/mingw64/include/QtWidgets/qlabel.h \
+ C:/msys64/mingw64/include/QtWidgets/qframe.h \
  C:/Users/JOEL/Documents/GitHub/Real\ Time\ Audio\ Modulator\ Demodulator\ Simulator/AudioModulator/qcustomplot.h \
  C:/msys64/mingw64/include/QtCore/QObject \
  C:/msys64/mingw64/include/QtCore/qobject.h \
@@ -940,7 +943,6 @@ CMakeFiles/modulator.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/QtWidgets/qtabbar.h \
  C:/msys64/mingw64/include/QtWidgets/qtabwidget.h \
  C:/msys64/mingw64/include/QtWidgets/qrubberband.h \
- C:/msys64/mingw64/include/QtWidgets/qframe.h \
  C:/msys64/mingw64/include/QtWidgets/qabstractitemview.h \
  C:/msys64/mingw64/include/QtWidgets/qabstractscrollarea.h \
  C:/msys64/mingw64/include/QtCore/qitemselectionmodel.h \
@@ -1025,7 +1027,6 @@ CMakeFiles/modulator.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/QtWidgets/qkeyeventtransition.h \
  C:/msys64/mingw64/include/QtCore/qeventtransition.h \
  C:/msys64/mingw64/include/QtWidgets/qkeysequenceedit.h \
- C:/msys64/mingw64/include/QtWidgets/qlabel.h \
  C:/msys64/mingw64/include/QtWidgets/qlayoutitem.h \
  C:/msys64/mingw64/include/QtWidgets/qlcdnumber.h \
  C:/msys64/mingw64/include/QtWidgets/qlineedit.h \

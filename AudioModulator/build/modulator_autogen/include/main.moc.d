@@ -368,6 +368,7 @@ C:/Users/JOEL/Documents/GitHub/Real\ Time\ Audio\ Modulator\ Demodulator\ Simula
   C:/msys64/mingw64/include/QtPrintSupport/qtprintsupportversion.h \
   C:/msys64/mingw64/include/QtWidgets/QApplication \
   C:/msys64/mingw64/include/QtWidgets/QCommonStyle \
+  C:/msys64/mingw64/include/QtWidgets/QLabel \
   C:/msys64/mingw64/include/QtWidgets/QLayout \
   C:/msys64/mingw64/include/QtWidgets/QPushButton \
   C:/msys64/mingw64/include/QtWidgets/QScrollerProperties \
@@ -629,6 +630,7 @@ C:/Users/JOEL/Documents/GitHub/Real\ Time\ Audio\ Modulator\ Demodulator\ Simula
   C:/msys64/mingw64/include/c++/14.1.0/cctype \
   C:/msys64/mingw64/include/c++/14.1.0/cerrno \
   C:/msys64/mingw64/include/c++/14.1.0/charconv \
+  C:/msys64/mingw64/include/c++/14.1.0/chrono \
   C:/msys64/mingw64/include/c++/14.1.0/clocale \
   C:/msys64/mingw64/include/c++/14.1.0/cmath \
   C:/msys64/mingw64/include/c++/14.1.0/compare \

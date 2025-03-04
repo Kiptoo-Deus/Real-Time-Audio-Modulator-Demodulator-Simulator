@@ -5,9 +5,11 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QTimer>
+#include <QLabel> // For metrics display
 #include "qcustomplot.h"
 #include <sndfile.h>
 #include <fftw3.h>
+#include <chrono> // For timing
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -35,6 +37,8 @@ bool is_recording = false;
 std::vector<float> echo_buffer(ECHO_DELAY, 0.0f);
 size_t echo_pos = 0;
 bool echo_enabled = false;
+double last_latency_ms = 0.0; // Store latency in ms
+double cpu_usage = 0.0;       // Approximate CPU usage
 
 float carrier(float amplitude) {
     carrier_time += 1.0f / SAMPLE_RATE;
@@ -91,6 +95,7 @@ void demodQAM(const std::vector<float>& in, std::vector<float>& out) {
 
 static int audioCallback(const void* input, void* output, unsigned long frameCount,
                          const PaStreamCallbackTimeInfo*, PaStreamCallbackFlags, void*) {
+    auto start = std::chrono::high_resolution_clock::now(); // Start timing
     const float* in = (const float*)input;
     float* out = (float*)output;
     for (unsigned long i = 0; i < frameCount; i++) {
@@ -112,6 +117,9 @@ static int audioCallback(const void* input, void* output, unsigned long frameCou
     if (is_recording && wav_file) {
         sf_write_float(wav_file, demodulated.data(), frameCount);
     }
+    auto end = std::chrono::high_resolution_clock::now(); // End timing
+    last_latency_ms = std::chrono::duration<double, std::milli>(end - start).count();
+    cpu_usage = (last_latency_ms / (1000.0 / SAMPLE_RATE * frameCount)) * 100.0; // Rough CPU % estimate
     return paContinue;
 }
 
@@ -146,6 +154,7 @@ public:
         noiseSlider->setValue(10);
         recordButton = new QPushButton("Start Recording", this);
         echoButton = new QPushButton("Enable Echo", this);
+        metricsLabel = new QLabel("Latency: 0.0 ms, CPU: 0.0%", this); 
         waveformPlot = new QCustomPlot(this);
         waveformPlot->addGraph();
         waveformPlot->xAxis->setRange(0, BUFFER_SIZE);
@@ -163,12 +172,13 @@ public:
         layout->addWidget(noiseSlider);
         layout->addWidget(recordButton);
         layout->addWidget(echoButton);
+        layout->addWidget(metricsLabel);
         layout->addWidget(waveformPlot);
         layout->addWidget(spectrumPlot);
         setLayout(layout);
 
         connect(amButton, &QPushButton::clicked, this, &AudioWindow::setAM);
-        connect(fmButton, &QPushButton::clicked, this, &AudioWindow::setFM); // Fixed bug...oh yeeah
+        connect(fmButton, &QPushButton::clicked, this, &AudioWindow::setFM);
         connect(qamButton, &QPushButton::clicked, this, &AudioWindow::setQAM);
         connect(noiseSlider, &QSlider::valueChanged, this, &AudioWindow::setNoise);
         connect(recordButton, &QPushButton::clicked, this, &AudioWindow::toggleRecord);
@@ -200,7 +210,7 @@ private slots:
     void setNoise(int value) { 
         noise_level = value / 100.0f; 
         noise = std::normal_distribution<float>(0.0f, noise_level); 
-        std::cout << "Noise level set to " << noise_level << "\n>";
+        std::cout << "Noise level set to " << noise_level << "\n";
     }
     void toggleRecord() {
         if (!is_recording) {
@@ -245,6 +255,11 @@ private slots:
         }
         spectrumPlot->graph(0)->setData(freq, mag);
         spectrumPlot->replot();
+
+
+        metricsLabel->setText(QString("Latency: %1 ms, CPU: %2%")
+                              .arg(last_latency_ms, 0, 'f', 1)
+                              .arg(cpu_usage, 0, 'f', 1));
     }
 
 private:
@@ -252,6 +267,7 @@ private:
     QCustomPlot* spectrumPlot;
     QPushButton* recordButton;
     QPushButton* echoButton;
+    QLabel* metricsLabel; 
     double* fft_in;
     fftw_complex* fft_out;
     fftw_plan fft_plan;
