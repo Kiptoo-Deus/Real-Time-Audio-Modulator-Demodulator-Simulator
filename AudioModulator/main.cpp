@@ -14,7 +14,7 @@
 #include <random>
 #define SAMPLE_RATE 44100
 #define BUFFER_SIZE 256
-#define ECHO_DELAY (SAMPLE_RATE / 4) // 0.25s delay
+#define ECHO_DELAY (SAMPLE_RATE / 4)
 
 PaStream* stream;
 float carrier_freq = 10000.0f;
@@ -32,9 +32,9 @@ std::normal_distribution<float> noise(0.0f, noise_level);
 SNDFILE* wav_file = nullptr;
 SF_INFO sf_info = {0};
 bool is_recording = false;
-std::vector<float> echo_buffer(ECHO_DELAY, 0.0f); // Echo delay line
+std::vector<float> echo_buffer(ECHO_DELAY, 0.0f);
 size_t echo_pos = 0;
-bool echo_enabled = false; // Echo state
+bool echo_enabled = false;
 
 float carrier(float amplitude) {
     carrier_time += 1.0f / SAMPLE_RATE;
@@ -49,6 +49,15 @@ float modulateFM(float audio_sample) {
     float freq_dev = 5000.0f;
     phase += 2 * M_PI * (carrier_freq + audio_sample * freq_dev) / SAMPLE_RATE;
     return sinf(phase);
+}
+
+float modulateQAM(float audio_sample) {
+    float I = audio_sample > 0 ? 1.0f : -1.0f;
+    float Q = (audio_sample > 0.5f || audio_sample < -0.5f) ? 1.0f : -1.0f;
+    carrier_time += 1.0f / SAMPLE_RATE;
+    float carrier_I = sinf(2 * M_PI * carrier_freq * carrier_time);
+    float carrier_Q = cosf(2 * M_PI * carrier_freq * carrier_time);
+    return 0.5f * (I * carrier_I + Q * carrier_Q);
 }
 
 float addNoise(float sample) {
@@ -71,19 +80,31 @@ void demodFM(const std::vector<float>& in, std::vector<float>& out) {
     }
 }
 
+void demodQAM(const std::vector<float>& in, std::vector<float>& out) {
+    for (size_t i = 0; i < in.size(); i++) {
+        float carrier_I = sinf(2 * M_PI * carrier_freq * carrier_time);
+        float I = in[i] * carrier_I;
+        out[i] = I > 0 ? 0.5f : -0.5f;
+        carrier_time += 1.0f / SAMPLE_RATE;
+    }
+}
+
 static int audioCallback(const void* input, void* output, unsigned long frameCount,
                          const PaStreamCallbackTimeInfo*, PaStreamCallbackFlags, void*) {
     const float* in = (const float*)input;
     float* out = (float*)output;
     for (unsigned long i = 0; i < frameCount; i++) {
-        modulated[i] = (mode == "FM") ? modulateFM(in[i]) : modulateAM(in[i]);
+        if (mode == "FM") modulated[i] = modulateFM(in[i]);
+        else if (mode == "QAM") modulated[i] = modulateQAM(in[i]);
+        else modulated[i] = modulateAM(in[i]);
         modulated[i] = addNoise(modulated[i]);
         if (mode == "FM") demodFM(modulated, demodulated);
+        else if (mode == "QAM") demodQAM(modulated, demodulated);
         else demodAM(modulated, demodulated);
-        if (echo_enabled) { // Apply echo
+        if (echo_enabled) {
             float delayed = echo_buffer[echo_pos];
-            demodulated[i] = demodulated[i] + 0.5f * delayed; // Mix with 50% echo
-            echo_buffer[echo_pos] = demodulated[i]; // Update delay line
+            demodulated[i] = demodulated[i] + 0.5f * delayed;
+            echo_buffer[echo_pos] = demodulated[i];
             echo_pos = (echo_pos + 1) % ECHO_DELAY;
         }
         out[i] = demodulated[i];
@@ -119,11 +140,12 @@ public:
         QVBoxLayout* layout = new QVBoxLayout(this);
         QPushButton* amButton = new QPushButton("AM Mode", this);
         QPushButton* fmButton = new QPushButton("FM Mode", this);
+        QPushButton* qamButton = new QPushButton("QAM Mode", this);
         QSlider* noiseSlider = new QSlider(Qt::Horizontal, this);
         noiseSlider->setRange(0, 50);
         noiseSlider->setValue(10);
         recordButton = new QPushButton("Start Recording", this);
-        echoButton = new QPushButton("Enable Echo", this); // New echo button
+        echoButton = new QPushButton("Enable Echo", this);
         waveformPlot = new QCustomPlot(this);
         waveformPlot->addGraph();
         waveformPlot->xAxis->setRange(0, BUFFER_SIZE);
@@ -137,6 +159,7 @@ public:
 
         layout->addWidget(amButton);
         layout->addWidget(fmButton);
+        layout->addWidget(qamButton);
         layout->addWidget(noiseSlider);
         layout->addWidget(recordButton);
         layout->addWidget(echoButton);
@@ -145,7 +168,8 @@ public:
         setLayout(layout);
 
         connect(amButton, &QPushButton::clicked, this, &AudioWindow::setAM);
-        connect(fmButton, &QPushButton::clicked, this, &AudioWindow::setFM);
+        connect(fmButton, &QPushButton::clicked, this, &AudioWindow::setFM); // Fixed bug...oh yeeah
+        connect(qamButton, &QPushButton::clicked, this, &AudioWindow::setQAM);
         connect(noiseSlider, &QSlider::valueChanged, this, &AudioWindow::setNoise);
         connect(recordButton, &QPushButton::clicked, this, &AudioWindow::toggleRecord);
         connect(echoButton, &QPushButton::clicked, this, &AudioWindow::toggleEcho);
@@ -172,10 +196,11 @@ public:
 private slots:
     void setAM() { mode = "AM"; std::cout << "Switched to AM\n"; }
     void setFM() { mode = "FM"; std::cout << "Switched to FM\n"; }
+    void setQAM() { mode = "QAM"; std::cout << "Switched to QAM\n"; }
     void setNoise(int value) { 
         noise_level = value / 100.0f; 
         noise = std::normal_distribution<float>(0.0f, noise_level); 
-        std::cout << "Noise level set to " << noise_level << "\n";
+        std::cout << "Noise level set to " << noise_level << "\n>";
     }
     void toggleRecord() {
         if (!is_recording) {
@@ -226,7 +251,7 @@ private:
     QCustomPlot* waveformPlot;
     QCustomPlot* spectrumPlot;
     QPushButton* recordButton;
-    QPushButton* echoButton; 
+    QPushButton* echoButton;
     double* fft_in;
     fftw_complex* fft_out;
     fftw_plan fft_plan;
