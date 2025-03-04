@@ -18,5 +18,4 @@ A C++ tool simulating AM/FM radio transmission with real-time audio processing a
 ## Run
 - `./modulator.exe`
 
-## Demo
-[See demo.mp4]
+![image](https://github.com/user-attachments/assets/4eec2aea-29d4-4bd5-ad4b-a321f8f7d19d)
